@@ -37,12 +37,22 @@ bool validArgs(const int argc, char **argv)
     printf("Using args (\"%i\" \"%i\" \"%i\")\n", atoi(argv[0]), atoi(argv[1]), atoi(argv[2]));
     return true;
 }
-
+char randomNumber(int upper,int lower){
+	return (rand() % (upper - lower + 1)) + lower;
+}
 Square **newGrid(const Length len, const int numBombs)
 {
     Square **grid = calloc(len.x, sizeof(Square *));
-    for(int i = 0; i < len.y; i++)
-        grid[i] = calloc(len.y, sizeof(Square));
+    for(int i = 0; i < len.y; i++) grid[i] = calloc(len.y, sizeof(Square));
+				srand(time(NULL));
+	for(int currentBombs = 0; currentBombs < numBombs; currentBombs++){
+		int x = randomNumber(len.x-1,0);
+		int y = randomNumber(len.y-1,0);
+		if(grid[x][y].num != -1)
+			grid[x][y].num = -1;
+			
+	}
+
     return grid;
 }
 
@@ -58,8 +68,7 @@ int main(int argc, char **argv)
         len.y = atoi(argv[2]);
         numBombs = atoi(argv[3]);
     }
-
-
+	Square **grid = newGrid(len,numBombs);
 
     return 0;
 }
