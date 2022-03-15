@@ -43,19 +43,33 @@ char randomNumber(int upper,int lower){
 Square **newGrid(const Length len, const int numBombs)
 {
     Square **grid = calloc(len.x, sizeof(Square *));
+
     for(int i = 0; i < len.y; i++) grid[i] = calloc(len.y, sizeof(Square));
-				srand(time(NULL));
+
+	srand(time(NULL));
 	for(int currentBombs = 0; currentBombs < numBombs; currentBombs++){
 		int x = randomNumber(len.x-1,0);
 		int y = randomNumber(len.y-1,0);
-		if(grid[x][y].num != -1)
+		if(grid[x][y].num != -1){
 			grid[x][y].num = -1;
+		}else{
+			x = randomNumber(len.x-1,0);
+			y = randomNumber(len.y-1,0);
+			grid[x][y].num = -1;
+
+		}
 			
 	}
 
     return grid;
 }
+void removeGrid(Square **grid,const Length len){
 
+    for(int i = 0; i < len.y; i++) free(grid[i]);
+    
+	free(grid );
+
+}
 // ./main.out xlen ylen numMines
 // default: ./main.out  9 9 10
 int main(int argc, char **argv)
@@ -70,5 +84,6 @@ int main(int argc, char **argv)
     }
 	Square **grid = newGrid(len,numBombs);
 
+	removeGrid(grid,len);
     return 0;
 }
